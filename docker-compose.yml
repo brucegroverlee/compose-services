@@ -1,0 +1,74 @@
+version: "3.2"
+
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+
+  mysql:
+    image: mysql:8.0.13
+    restart: always
+    command:
+      [
+        "mysqld",
+        "--sql-mode=",
+        "--default-authentication-plugin=mysql_native_password",
+      ]
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - mysqlData:/var/lib/mysql
+
+  mongo:
+    image: mongo:4.4.1
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongoData:/data/db
+
+  redis:
+    image: redis:5-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redisData:/data
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmqData:/var/lib/rabbitmq
+      - rabbitmqConf:/etc/rabbitmq/
+
+  seq:
+    image: datalust/seq:latest
+    restart: always
+    ports:
+      - 5380:80
+      - 5341:5341
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seqData:/data
+volumes:
+  postgresData:
+  mysqlData:
+  mongoData:
+  redisData:
+  rabbitmqData:
+  rabbitmqConf:
+  seqData:

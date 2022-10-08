@@ -1,0 +1,16 @@
+version: "3.2"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmqData:/var/lib/rabbitmq
+      - rabbitmqConf:/etc/rabbitmq/
+
+volumes:
+  rabbitmqData:
+  rabbitmqConf:
